@@ -1,10 +1,9 @@
 /*
 SENSOR POT GATEWAY (Arduino Yun)
 
-
 */
 
-#include <SoftwareSerial.h>   //Software Serial Port
+#include <SoftwareSerial.h>  
 #include <Bridge.h>
 #include <HttpClient.h>
 #include <YunClient.h>
@@ -14,10 +13,6 @@ SENSOR POT GATEWAY (Arduino Yun)
 
 #define RxD 9
 #define TxD 8
-
-/*#define MQTT_SERVER "192.168.1.5"
-#define MQTT_PORT 1883
-#define MQTT_TOPIC "outTopic"*/
 #define SERVER "192.168.1.4"      //my MQTT server address
 #define PORT  1122                //my MQTT server port
 #define TOPIC "topicDemo"         //my MQTT topic
@@ -32,9 +27,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
 }
 
 YunClient yun;
-
 PubSubClient mqtt(SERVER, PORT, callback, yun);
-
 SoftwareSerial blueToothSerial(RxD,TxD);
 bool rightMsg=false;
 char* jsonValue = "{ \"gatewayId\":\"11223344AABBCCDD\", \"nodeId\":\"%s\", \"sensorId\":%d, \"sensorValue\":\"%d\"}";
@@ -57,7 +50,6 @@ void setup() {
   Serial.println("START LOOP"); 
   
 }
-
 
 void loop(void) {
   mqtt.loop();
@@ -106,13 +98,10 @@ void loop(void) {
         Serial.println("Errore nel parsing");
         delay(5000);
       }
-      
     }
   }
-  
 }
   
-
 void setupBlueToothConnection()
 {
     blueToothSerial.begin(38400);                           // Set BluetoothBee BaudRate to default baud rate 38400
@@ -127,8 +116,6 @@ void setupBlueToothConnection()
     blueToothSerial.flush();
 }
 
-
-//invio dei dati a SEP
 void sendDataToServer(char* jsonValue, const char* nodeId, int sensorId, int sensorValue) {
   
   //memset(&charBuf[0], 0, sizeof(charBuf));
